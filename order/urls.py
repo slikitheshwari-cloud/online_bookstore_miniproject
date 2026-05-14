@@ -5,33 +5,38 @@ app_name = 'order'
 
 urlpatterns = [
 
-    # Existing URLs
-    path('', views.order_list, name="order_list"),
+    # =========================
+    # HTML (FRONTEND) VIEWS
+    # =========================
 
-    path('<int:id>/', views.order_details, name="order_details"),
+    path('', views.order_list_view, name="order_list"),
 
-    path('shipping/', views.order_create, name="order_create"),
+    path('create/', views.order_create_view, name="order_create"),
 
-    path('pdf/<int:id>/', views.pdf.as_view(), name="pdf"),
+    path('<int:id>/', views.order_detail_view, name="order_details"),
+
+    path('pdf/<int:id>/', views.pdf.as_view(), name="order_pdf"),
 
 
-    # API URLs
+    # =========================
+    # REST API ENDPOINTS
+    # =========================
 
     # GET ALL ORDERS
     path('api/orders/', views.order_list_api, name='order_list_api'),
 
     # GET SINGLE ORDER
-    path('api/order/<int:id>/', views.order_detail_api, name='order_detail_api'),
+    path('api/orders/<int:id>/', views.order_detail_api, name='order_detail_api'),
 
     # CREATE ORDER
-    path('api/create-order/', views.create_order_api, name='create_order_api'),
+    path('api/orders/create/', views.create_order_api, name='create_order_api'),
 
     # UPDATE ORDER
-    path('api/update-order/<int:id>/', views.update_order_api, name='update_order_api'),
+    path('api/orders/update/<int:id>/', views.update_order_api, name='update_order_api'),
 
     # UPDATE PAYMENT STATUS
-    path('api/update-payment/<int:id>/', views.update_payment_api, name='update_payment_api'),
+    path('api/orders/payment/<int:id>/', views.update_payment_api, name='update_payment_api'),
 
     # DELETE ORDER
-    path('api/delete-order/<int:id>/', views.delete_order_api, name='delete_order_api'),
+    path('api/orders/delete/<int:id>/', views.delete_order_api, name='delete_order_api'),
 ]
