@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin Dashboard</title>
+
+    <style>
+
+        body{
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1{
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .dashboard{
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card{
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .card h2{
+            margin: 0;
+            font-size: 40px;
+            color: #ff9800;
+        }
+
+        .card p{
+            margin-top: 10px;
+            font-size: 20px;
+        }
+
+        .actions{
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .actions a{
+            text-decoration: none;
+        }
+
+        .actions button{
+            padding: 15px 25px;
+            border: none;
+            background: #ff9800;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .actions button:hover{
+            background: #e68900;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>Admin Dashboard</h1>
+
+<div class="dashboard">
+
+    <div class="card">
+        <h2>{{ total_books }}</h2>
+        <p>Total Books</p>
+    </div>
+
+    <div class="card">
+        <h2>{{ total_writers }}</h2>
+        <p>Total Writers</p>
+    </div>
+
+    <div class="card">
+        <h2>{{ total_categories }}</h2>
+        <p>Total Categories</p>
+    </div>
+
+    <div class="card">
+        <h2>{{ total_orders }}</h2>
+        <p>Total Orders</p>
+    </div>
+
+</div>
+<div class="actions">
+
+    <a href="{% url 'store:orders_manage' %}">
+        <button>
+            View All Orders
+        </button>
+    </a>
+
+</div>
+
+
+</body>
+</html>

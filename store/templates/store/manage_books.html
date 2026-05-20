@@ -1,0 +1,74 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% load customfunction %}
+
+{% block container %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Manage Books</h2>
+
+    <div class="row">
+
+        {% for book in books %}
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card shadow-sm h-100">
+
+                <img src="{{ book.coverpage.url }}"
+                     class="card-img-top"
+                     style="height:300px; object-fit:cover;">
+
+                <div class="card-body">
+
+                    <h4>{{ book.name }}</h4>
+
+                    <p style="margin:0px;">
+                        by
+                        <a style="font-weight:bold"
+                           href="{% url 'store:all_writers' %}">
+                            {{ book.writer }}
+                        </a>
+                    </p>
+
+                    <div class="rating mt-2">
+                        {{ book.totalrating|averagerating:book.totalreview }}
+
+                        <span class="totalrating">
+                            {{ book.totalreview|add:-1 }} Reviews
+                        </span>
+                    </div>
+
+                    <p class="mt-3 text-justify">
+                        {{ book.description|truncatewords:30 }}
+                    </p>
+
+                    <p>
+                        <strong>Price:</strong> ${{ book.price }}
+                    </p>
+
+                    <a href="{% url 'store:manage_books' %}"
+                       class="btn btn-warning">
+                        View Details
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-12">
+            <p>No books available.</p>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

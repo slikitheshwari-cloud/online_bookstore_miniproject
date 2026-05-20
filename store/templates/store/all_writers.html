@@ -1,0 +1,41 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block container %}
+
+<div class="container mt-4">
+
+    <h2>All Writers</h2>
+
+    <div class="row">
+
+        {% for writer in writers %}
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card p-3 shadow-sm">
+
+                <h4>{{ writer.name }}</h4>
+
+                {% if writer.image %}
+                    <img src="{{ writer.image.url }}"
+                         class="img-fluid mb-2"
+                         style="height:200px; object-fit:cover;">
+                {% endif %}
+
+                <a href="{% url 'store:writer' id=writer.id %}"
+                   class="btn btn-warning">
+                    View Books
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -3,6 +3,17 @@ from crispy_forms.helper import FormHelper
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Review
+from django import forms
+from .models import Book
+
+
+
+class BookForm(forms.ModelForm):
+
+    class Meta:
+        model = Book
+        fields = '__all__'
+
 
 class RegistrationForm(UserCreationForm):
     name = forms.CharField(required=True)

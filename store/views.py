@@ -5,7 +5,24 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from .forms import RegistrationForm, ReviewForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+from django.shortcuts import render
+from order.models import Order
+from .forms import BookForm
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 
+
+def all_writers(request):
+
+    writers = Writer.objects.all()
+
+    return render(
+        request,
+        'store/all_writers.html',
+        {'writers': writers}
+    )
 
 def index(request):
     newpublished = Book.objects.order_by('-created')[:15]
@@ -16,22 +33,40 @@ def index(request):
     }
     return render(request, 'store/index.html', context)
 
+def orders_manage(request):
+    return render(request,'store/orders_manage.html')
+
 
 def signin(request):
+
     if request.user.is_authenticated:
         return redirect('store:index')
-    else:
-        if request.method == "POST":
-            user = request.POST.get('user')
-            password = request.POST.get('pass')
-            auth = authenticate(request, username=user, password=password)
-            if auth is not None:
-                login(request, auth)
-                return redirect('store:index')
-            else:
-            	messages.error(request, 'username and password doesn\'t match')
 
-    return render(request, "store/login.html")	
+    if request.method == "POST":
+
+        user = request.POST.get('user')
+        password = request.POST.get('pass')
+
+        auth = authenticate(
+            request,
+            username=user,
+            password=password
+        )
+
+        if auth is not None:
+
+            login(request, auth)
+
+            return redirect('store:index')
+
+        else:
+
+            messages.error(
+                request,
+                "Username and password doesn't match"
+            )
+
+    return render(request, "store/login.html")
 
 
 def signout(request):
@@ -109,3 +144,70 @@ def get_writer(request, id):
     }
     return render(request, "store/writer.html", context)
 
+# ADMIN LOGIN
+def admin_login(request):
+
+    if request.method == 'POST':
+
+        username = request.POST.get('username')
+
+        password = request.POST.get('password')
+
+        user = authenticate(
+            request,
+            username=username,
+            password=password
+        )
+
+        # ONLY ADMIN CAN LOGIN
+        if user is not None and user.is_superuser:
+
+            login(request, user)
+
+            return redirect('store:admin_dashboard')
+
+    return render(
+        request,
+        'store/admin_login.html'
+    )
+
+
+# ADMIN DASHBOARD
+@login_required
+def admin_dashboard(request):
+
+    total_books = Book.objects.count()
+    total_writers = Writer.objects.count()
+    total_categories = Category.objects.count()
+    total_orders = Order.objects.count()
+
+    context = {
+        'total_books': total_books,
+        'total_writers': total_writers,
+        'total_categories': total_categories,
+        'total_orders': total_orders,
+    }
+
+    return render(
+        request,
+        'store/admin_dashboard.html',
+        context
+    )
+
+
+
+
+@login_required
+def add_book(request):
+
+    form = BookForm(request.POST or None, request.FILES or None)
+
+    if form.is_valid():
+        form.save()
+        return redirect('store:manage_books')
+
+    return render(
+        request,
+        'store/add_book.html',
+        {'form': form}
+    )
