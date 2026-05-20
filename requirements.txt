@@ -6,3 +6,4 @@ setuptools==69.5.1
 wheel
 django-crispy-forms
 crispy-bootstrap4
+djangorestframework==3.17.1
