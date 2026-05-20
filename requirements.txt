@@ -4,3 +4,4 @@ whitenoise
 Pillow
 setuptools==69.5.1
 wheel
+django-crispy-forms
