@@ -1,3 +1,7 @@
+setuptools==69.5.1
+wheel
+gunicorn
+whitenoise
 django-admin-honeypot==1.1.0
 django-allauth==0.38.0
 django-appconf==1.0.2
